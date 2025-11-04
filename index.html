@@ -1,133 +1,1794 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rejaul | Portfolio</title>
-  <meta name="description" content="Portfolio of Rejaul Karim">
-  <style>
-    :root {
-      --bg:#0b1220;
-      --fg:#e5e7eb;
-      --muted:#9aa3b2;
-      --card:#111827;
-      --accent:#60a5fa;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--fg);
-    }
-    .wrap{max-width:880px;margin:auto;padding:32px 16px}
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:28px
-    }
-    a{color:var(--accent);text-decoration:none}
-    .card{
-      background:var(--card);
-      border:1px solid #1f2937;
-      border-radius:14px;
-      padding:20px;
-      margin:12px 0
-    }
-    h1{margin:0 0 8px}
-    .muted{color:var(--muted)}
-    footer{margin-top:28px;font-size:14px;color:var(--muted);text-align:center}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejaul Karim - RAW PHP Developer</title>
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2300F2A2' rx='20' ry='20'></rect><text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' font-size='60' font-family='sans-serif' font-weight='bold' fill='%23010101'>L</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==============================================
+        ROOT VARIABLES & GLOBAL STYLES
+        ============================================== */
+        :root {
+            --bg-color: #010101;
+            --card-color: #111111;
+            --border-color: #222222;
+            --text-color: #FFFFFF;
+            --text-muted-color: #A1A1A1;
+            --accent-color: #00F2A2;
+            --accent-color-darker: #00d991;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        /* Prevent body scroll when mobile menu is open */
+        body.menu-open {
+            overflow: hidden;
+        }
 
-    /* New sections */
-    section{
-      margin-top:40px;
-      padding:30px;
-      border-radius:14px;
-      background:var(--card);
-    }
-    section h2{
-      color:var(--accent);
-      text-align:center;
-      margin-bottom:16px;
-    }
-    .project-list{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:20px;
-    }
-    .project-card{
-      width:260px;
-      background:#1e293b;
-      border-radius:12px;
-      padding:20px;
-      border:1px solid #334155;
-    }
-    .project-card h3{margin-top:0}
-    .project-card a{color:#3b82f6}
-  </style>
+        /* ==============================================
+        BUTTON STYLES
+        ============================================== */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            display: inline-block;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .border{
+            color: #00d991;
+            border-color: #00d991;
+        }
+        .btn span { position: relative; z-index: 2; transition: color 0.3s ease-in-out; }
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--accent-color-darker);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1;
+        }
+        .btn-primary { background-color: var(--accent-color); color: #000; }
+        .btn-primary:hover::before { transform: translateX(0); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border: 1px solid var(--text-color); }
+        .btn-secondary:hover { background-color: var(--text-color); }
+        .btn-secondary:hover span { color: #000; }
+        
+        /* ==============================================
+        HEADER / NAVIGATION
+        ============================================== */
+        header {
+             border-bottom: 1px solid transparent;
+             transition: border-color 0.3s ease, backdrop-filter 0.3s ease, background-color 0.3s ease;
+        }
+        header.scrolled {
+            background-color: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom-color: var(--accent-color);
+        }
+        /* UPDATED: Person Name Style */
+        .nav-name {
+            text-shadow: 0 0 10px rgba(0, 242, 162, 0.5);
+        }
+
+        /* UPDATED: Nav Link Hover Effect */
+        .header-nav-link { position: relative; transition: color 0.3s ease; }
+        .header-nav-link:hover { color: var(--accent-color); }
+        .header-nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px; /* Made thicker for "bold" effect */
+            bottom: -8px; /* Adjusted position */
+            left: 0;
+            background-color: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease-out;
+        }
+        .header-nav-link:hover::after { transform: scaleX(1); }
+        
+        /* UPDATED: Mobile Menu Styles */
+        #mobile-menu {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(1, 1, 1, 0.8);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 40; /* Below the hamburger button */
+        }
+        #mobile-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ==============================================
+        MARQUEE ANIMATION
+        ============================================== */
+        .marquee { overflow: hidden; position: relative; display: flex; }
+        .client-marquee {
+             background:#010101; }
+        .marquee-content {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: flex-start; /* Changed for seamless loop */
+            min-width: 100%;
+            animation: marquee 40s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); } /* Animate to half the width for duplicated content */
+        }
+        .client-marquee .marquee-content { animation-duration: 30s; }
+        .client-marquee .marquee-content img { 
+            height: 2.5rem; 
+            margin: 0 2.5rem; 
+            /* filter: brightness(0) invert(0.5);  */
+            transition: filter 0.3s;
+         }
+        .client-marquee .marquee-content img:hover { filter: none ;  }
+        .client-marquee{ background:#010101; }  /* আগের var(--accent-color) বদলে দিন */
+
+
+        
+        /* ==============================================
+        SCROLL & FLOATING ICON ANIMATIONS
+        ============================================== */
+        
+            .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            }
+
+           
+            .floating-icon {
+            position: absolute;                 
+            width: 55px;                        
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;            
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            overflow: hidden;                  
+            will-change: transform;            
+            }
+
+           
+            .floating-icon::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: #00d991;               
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: fillBg 3s linear infinite;
+            z-index: 0;
+            border-radius: inherit;            
+            pointer-events: none;
+            }
+
+
+            .floating-icon > * {
+            position: relative;
+            z-index: 1;
+            }
+
+            
+            @keyframes fillBg {
+            0%   { transform: scaleX(0); }
+            50%  { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
+            }
+
+            
+            @keyframes orbit1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-15px, -40px); } }
+            @keyframes orbit2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(10px, 30px); } }
+            @keyframes orbit3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -10px); } }
+
+            .floating-icon-1 { top: -20px; left: 45%;   animation: orbit1 10s ease-in-out infinite; }
+            .floating-icon-2 { top: 40%;   left: -40px;  animation: orbit2 8s  ease-in-out infinite 2s; }
+            .floating-icon-3 { bottom: -10px; right: -30px; animation: orbit3 9s ease-in-out infinite 1s; }
+
+        
+        /* ==============================================
+        EXPERTISE SECTION STYLES
+        ============================================== */
+        .expertise-card { border: 1px solid var(--border-color); transition: border-color 0.3s, transform 0.3s; }
+        .expertise-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        .expertise-icon { 
+            position: relative; 
+            overflow: hidden; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* UPDATED: Infinite Wipe Animation */
+        .expertise-icon .icon-bg-wipe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent-color);
+            transform: translateX(-101%);
+            z-index: 1;
+            animation: wipe-across 3s infinite ease-in-out;
+        }
+
+        .expertise-icon .icon-top {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* The SVG itself animates color */
+        .expertise-icon .icon-top svg {
+             color: var(--accent-color);
+             animation: color-invert-top 3s infinite ease-in-out;
+        }
+
+        @keyframes wipe-across {
+            0%, 100% { transform: translateX(-101%); } /* Start off-screen left */
+            40%, 60% { transform: translateX(0); }    /* Wipe across and hold */
+            90% { transform: translateX(101%); }   /* Exit off-screen right */
+        }
+
+        @keyframes color-invert-top {
+             /* Sync with wipe-across: color should be black when wipe is at translateX(0) */
+             0%, 35%, 95%, 100% { color: var(--accent-color); }
+             45%, 90% { color: #000; }
+        }
+        
+        /* ==============================================
+        MISCELLANEOUS SECTION STYLES
+        ============================================== */
+        .project-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        .testimonial-card { display: inline-block; vertical-align: top; width: 380px; margin: 0 2rem; white-space: normal; }
+        .star-gold { color: #FFD700; }
+        .final-cta { background-image: url('https://placehold.co/1200x600/010101/111111?text=Code+Background'); background-size: cover; background-position: center; position: relative; }
+        .final-cta::before { content: ''; position: absolute; inset: 0; background-color: rgba(1,1,1,0.8); backdrop-filter: blur(5px); }
+        .final-cta > * { position: relative; z-index: 2; }
+    </style>
 </head>
-<body>
-<<<<<<< HEAD
- <h1>I am Rejaul Karim</h1>
- <h2>This page is under construction</h2>
- <p> I am Web Developer </p> 
- 
-<h2>✅ Updated at Fri Oct 17 19:16:57 OST 2025</h2>
-=======
-  <div class="wrap">
-    <header>
-      <strong>Rejaul Karim</strong>
-      <nav>
-        <a href="#about">About</a> ·
-        <a href="#projects">Projects</a> ·
-        <a href="#contact">Contact</a>
-      </nav>
+
+<body class="antialiased">
+        
+    <!-- Google Fonts for the 'Source Code Pro' monospace font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        /* * Core styling for the effect. 
+         * This applies the effect to any page this file is included in.
+         */
+        body {
+            /* Hides the default system cursor. */
+            cursor: none;
+        }
+
+        /* * The main wrapper for the developer cursor. 
+         * It tracks the mouse with a slight delay for a fluid feel.
+         */
+        #developer-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999; /* Ensures it's on top of everything. */
+            pointer-events: none; /* Allows clicks to pass through. */
+            
+            /* Typography for the < > brackets */
+            font-family: 'Source Code Pro', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: #00f2a2;
+            
+            /* A subtle text shadow to lift it off the page. */
+            text-shadow: 0 0 5px rgba(0, 242, 162, 0.5);
+
+            /* Smooth transition for position and click animation. */
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                        left 0.1s cubic-bezier(0.25, 1, 0.5, 1), 
+                        top 0.1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Styling for the individual brackets to allow for animation. */
+        #developer-cursor > span {
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* * Click Animation: When the '.clicked' class is added,
+         * the brackets spread apart for a satisfying interactive feel.
+         */
+        #developer-cursor.clicked #cursor-lt {
+            transform: translateX(-4px);
+        }
+        #developer-cursor.clicked #cursor-gt {
+            transform: translateX(4px);
+        }
+
+        /* * This is the soft glow that follows the main cursor 
+         * with a more pronounced delay, creating the trail effect.
+         */
+        #glow-cursor {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(
+                circle,
+                rgba(0, 242, 162, 0.1) 0%, /* Your primary color */
+                rgba(0, 242, 162, 0) 65%
+            );
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998; /* Sits just behind the developer cursor. */
+            
+            /* The longer transition creates the smooth, lagging "trail". */
+            transition: left 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+                        top 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+
+    <!-- HTML elements for the custom cursor and glow effect. -->
+    <div id="developer-cursor">
+        <span id="cursor-lt">&lt;</span><span id="cursor-gt">&gt;</span>
+    </div>
+    <div id="glow-cursor"></div>
+
+    <script>
+        // --- Anti-Inspect Script ---
+        // Disables right-clicking to prevent context menu.
+       // document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Disables common keyboard shortcuts for developer tools.
+       // document.addEventListener('keydown', event => {
+          //  if (event.keyCode == 123) { // F12
+              //  event.preventDefault();
+           // } else if (event.ctrlKey && event.shiftKey && event.key === 'I') { // Ctrl+Shift+I
+              //  event.preventDefault();
+           // } else if (event.ctrlKey && event.shiftKey && event.key === 'J') { // Ctrl+Shift+J
+             //   event.preventDefault();
+           // } else if (event.ctrlKey && event.key === 'U') { // Ctrl+U
+             //   event.preventDefault();
+          //  }
+      //  });
+
+
+        // --- Mouse Glow Effect Script ---
+        // Self-executing function to avoid polluting the global scope.
+        (() => {
+            const devCursor = document.getElementById('developer-cursor');
+            const glowCursor = document.getElementById('glow-cursor');
+
+            // Don't run the script if the elements aren't on the page.
+            if (!devCursor || !glowCursor) return;
+
+            // Center the developer cursor initially.
+            const cursorWidth = devCursor.offsetWidth;
+            const cursorHeight = devCursor.offsetHeight;
+
+            // Update positions on mouse move.
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    // The developer cursor has a slight delay handled by CSS.
+                    devCursor.style.left = `${e.clientX - cursorWidth / 2}px`;
+                    devCursor.style.top = `${e.clientY - cursorHeight / 2}px`;
+                    
+                    // The glow cursor has a more noticeable delay.
+                    glowCursor.style.left = `${e.clientX}px`;
+                    glowCursor.style.top = `${e.clientY}px`;
+                });
+            }, { passive: true }); // Performance optimization
+
+            // Add click animation class on mouse down.
+            document.addEventListener('mousedown', () => {
+                devCursor.classList.add('clicked');
+            });
+
+            // Remove click animation class on mouse up.
+            document.addEventListener('mouseup', () => {
+                devCursor.classList.remove('clicked');
+            });
+        })();
+    </script>
+        
+
+<style>
+  .floating-whatsapp-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    color: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* Start hidden for animation */
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .floating-whatsapp-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: #FFFFFF;
+  }
+
+  .floating-whatsapp-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .floating-whatsapp-btn {
+      width: 50px;
+      height: 50px;
+      bottom: 15px;
+      right: 15px;
+    }
+    
+    .floating-whatsapp-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+<a 
+  href="https://wa.me/8801605322974" 
+  class="floating-whatsapp-btn" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  aria-label="Chat with us on WhatsApp"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 439.7c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72.3 386l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5c.1 101.8-82.7 184.6-184.5 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
+</a>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Check if GSAP is loaded
+    if (window.gsap) {
+      const btn = ".floating-whatsapp-btn";
+      
+      // 1. Initial "pop-in" animation
+      gsap.to(btn, {
+        duration: 0.8,
+        scale: 1,
+        opacity: 1,
+        ease: "back.out(1.7)",
+        delay: 1.5 // Wait 1.5s after page load
+      });
+
+      // 2. Subtle pulse animation timeline
+      const pulseTimeline = gsap.timeline({ 
+        repeat: -1, // Repeat indefinitely
+        repeatDelay: 4, // Wait 4 seconds between each pulse
+        delay: 3 // Start this animation 3s after page load
+      });
+      
+      pulseTimeline.to(btn, { 
+        scale: 1.1, 
+        duration: 0.3,
+        ease: "power1.inOut" 
+      })
+      .to(btn, { 
+        scale: 1, 
+        duration: 0.3,
+        ease: "power1.inOut"
+      })
+      .to(btn, { 
+        scale: 1.1, 
+        duration: 0.3,
+        ease: "power1.inOut",
+        delay: 0.1
+      })
+      .to(btn, { 
+        scale: 1, 
+        duration: 0.3,
+        ease: "power1.inOut"
+      });
+
+    } else {
+      // Fallback if GSAP isn't loaded: just show the button
+      const btnEl = document.querySelector(".floating-whatsapp-btn");
+      if (btnEl) {
+        btnEl.style.opacity = "1";
+        btnEl.style.transform = "scale(1)";
+      }
+    }
+  });
+</script>
+
+
+    <!-- Header / Navigation -->
+    <header id="main-header" class="sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center relative">
+            <a href="#" class="text-2xl font-bold nav-name" style="color: #00f2a2;">Rejaul Karim</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#expertise" class="header-nav-link">Expertise</a>
+                <a href="#about" class="header-nav-link">About Me</a>
+                <a href="#portfolio" class="header-nav-link">Portfolio</a>
+                <a href="#testimonials" class="header-nav-link">Testimonials</a>
+                <a href="#contact" class="header-nav-link">Contact</a>
+                <a href="#contact" class="btn btn-primary ml-4"><span>Book a call</span></a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-2xl z-50">
+                <svg id="menu-open-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                <svg id="menu-close-icon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </nav>
+>>>>>>> d93b4f1 (Fix image paths & add img assets)
     </header>
-
-    <h1>Assalamu Alaikum 👋</h1>
-    <p class="muted">Welcome to my personal portfolio website — built with ❤️ and GitHub Pages!</p>
-
-    <!-- About Section -->
-    <section id="about">
-      <h2>About Me</h2>
-      <p style="max-width:650px;margin:auto;text-align:center;">
-        Hi! I'm <strong>Rejaul Karim</strong>, a passionate web developer who loves creating clean,
-        responsive, and user-friendly websites.  
-        I’m currently expanding my skills in JavaScript and modern frameworks.
-      </p>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-      <h2>My Projects</h2>
-      <div class="project-list">
-        <div class="project-card">
-          <h3>Portfolio Website</h3>
-          <p>A responsive personal portfolio built using HTML, CSS, and JS.</p>
-          <a href="#">View Demo →</a>
+    <!-- UPDATED: Mobile Menu Structure -->
+    <div id="mobile-menu">
+        <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl">
+            <a href="#expertise" class="mobile-nav-link">Expertise</a>
+            <a href="#about" class="mobile-nav-link">About Me</a>
+            <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+            <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+            <a href="#contact" class="btn btn-primary mt-4"><span>Book a call</span></a>
         </div>
-        <div class="project-card">
-          <h3>GitHub Pages Site</h3>
-          <p>This site is hosted on GitHub Pages — free and fast static hosting.</p>
-          <a href="https://github.com/devrejaul/devrejaul.github.io">View Code →</a>
+    </div>
+
+    
+
+    <main>
+        <div class="container mx-auto px-6">
+            <!-- Hero Section -->
+            <section id="hero" class="py-20 md:py-24">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="animate-on-scroll">
+                        <h1 class="text-4xl md:text-6xl font-extrabold my-4 leading-tight">
+                           RAW PHP Developer Creating <span class="text-accent"><span style="color: #00f2a2;">Stunning Websites</span></span></h1>
+                        <p class="max-w-xl text-slate-400 md:text-lg mb-8">
+                            Transforming your unique and innovative ideas into beautiful, user-friendly, and highly functional websites that not only captivate your audience but also drive tangible, measurable results for your business.                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#portfolio" class="btn btn-primary"><span>Watch My Work</span></a>
+                            <a href="#contact" class="btn btn-secondary"><span>Book a call</span></a>
+                        </div>
+                 </div>
+                    <!-- UPDATED: Now visible on mobile -->
+                    <div class="relative h-[300px] marquee animate-on-scroll">
+                        <div class="marquee-content">
+                                  <img src="./img/image.png" alt="Project Title One" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="./img/image copy 6.png" alt="Project Title Two" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="./img/image copy 3.png" alt="Project Title Three" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="/img/image copy 7.png" alt="Project Title Two" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="/img/image copy 2.png" alt="Project Title Three" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="/img/image copy 7.png" alt="Project Title Two" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                                  <img src="/img/image copy.png" alt="Project Title Three" class="h-[250px] w-auto mx-4 rounded-lg border border-border-color">
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </div>
+
+        <!-- Clients Marquee Section -->
+        <section class="py-6 client-marquee marquee animate-on-scroll">
+            <div class="marquee-content">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=ClickSEO&amp;font=raleway" alt="ClickSEO" title="ClickSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=PowerIn&amp;font=raleway" alt="PowerIn" title="PowerIn">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=SerpSEO&amp;font=raleway" alt="SerpSEO" title="SerpSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=OZOW&amp;font=raleway" alt="OZOW" title="OZOW">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=Ambl.&amp;font=raleway" alt="Ambl." title="Ambl.">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=ClickSEO&amp;font=raleway" alt="ClickSEO" title="ClickSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=PowerIn&amp;font=raleway" alt="PowerIn" title="PowerIn">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=SerpSEO&amp;font=raleway" alt="SerpSEO" title="SerpSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=OZOW&amp;font=raleway" alt="OZOW" title="OZOW">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=Ambl.&amp;font=raleway" alt="Ambl." title="Ambl.">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=ClickSEO&amp;font=raleway" alt="ClickSEO" title="ClickSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=PowerIn&amp;font=raleway" alt="PowerIn" title="PowerIn">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=SerpSEO&amp;font=raleway" alt="SerpSEO" title="SerpSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=OZOW&amp;font=raleway" alt="OZOW" title="OZOW">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=Ambl.&amp;font=raleway" alt="Ambl." title="Ambl.">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=ClickSEO&amp;font=raleway" alt="ClickSEO" title="ClickSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=PowerIn&amp;font=raleway" alt="PowerIn" title="PowerIn">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=SerpSEO&amp;font=raleway" alt="SerpSEO" title="SerpSEO">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=OZOW&amp;font=raleway" alt="OZOW" title="OZOW">
+                                    <img src="https://placehold.co/150x40/00F2A2/000000?text=Ambl.&amp;font=raleway" alt="Ambl." title="Ambl.">
+                            </div>
+        </section>
+
+        <div class="container mx-auto px-6">
+            <!-- Expertise Section -->
+            <section id="expertise" class="py-20">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-4xl font-bold">My Expertise</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 0ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Raw PHP (1.5 years)</h3>
+                        <p class="text-slate-400 text-sm">Building robust back-end systems and custom solutions with pure, efficient PHP.</p>
+                    </div>
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 100ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Server Admin</h3>
+                        <p class="text-slate-400 text-sm">Managing and securing server environments for optimal performance and uptime.</p>
+                    </div>
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 200ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Database Expert</h3>
+                        <p class="text-slate-400 text-sm">Designing and optimizing complex database structures for speed and reliability.</p>
+                    </div>
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 300ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2M11,13.5V11.4L9.5,12.2V10.9L11,10.1V8.5H12V10.1L13.5,10.9V12.2L12,11.4V13.5M7.9,15.9C7.2,15.2 6.7,14.2 6.7,13.1C6.7,11.4 7.6,10.1 9,9.3V14.2C8.5,14.7 8.2,15.3 7.9,15.9M12,19.3C10.6,19.3 9.3,18.8 8.3,17.9C9.2,17.1 9.8,16.1 10,15V9.1C10.7,8.8 11.3,8.5 12,8.5C12.7,8.5 13.3,8.8 14,9.1V15C14.2,16.1 14.8,17.1 15.7,17.9C14.7,18.8 13.4,19.3 12,19.3M16.1,15.9C15.8,15.3 15.5,14.7 15,14.2V9.3C16.4,10.1 17.3,11.4 17.3,13.1C17.3,14.2 16.8,15.2 16.1,15.9Z" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">WordPress (6 years)</h3>
+                        <p class="text-slate-400 text-sm">Developing custom themes, plugins, and providing expert-level WordPress solutions.</p>
+                    </div>
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 400ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">SEO Expert</h3>
+                        <p class="text-slate-400 text-sm">Improving website visibility and rankings on search engines through proven strategies.</p>
+                    </div>
+                                        <div class="expertise-card bg-card p-6 rounded-lg text-left animate-on-scroll" style="transition-delay: 500ms;">
+                        <div class="expertise-icon p-3 bg-card border border-border-color rounded-md mb-4">
+                            <div class="icon-bg-wipe"></div>
+                            <div class="icon-top"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">E-commerce Expert</h3>
+                        <p class="text-slate-400 text-sm">Building and scaling online stores that convert visitors into loyal customers.</p>
+                    </div>
+                                    </div>
+            </section>
+
+            <!-- About Me Section -->
+            
+<style>
+    /* --- Basic Section Layout --- */
+    #about {
+        color: var(--text-color, #FFFFFF);
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+        position: relative;
+        background-color: var(--bg-color, #010101);
+        padding: 3rem 0 2rem 0;
+    }
+    
+    @media (min-width: 768px) {
+        #about {
+            padding: 4rem 0 3rem 0;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        #about {
+            padding: 5rem 0 4rem 0;
+        }
+    }
+    
+    #about .container {
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    #about .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+        #about .content-wrapper {
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        #about .content-wrapper {
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        #about .content-wrapper {
+            gap: 6rem;
+            margin-bottom: 5rem;
+        }
+    }
+
+    /* --- Image Column --- */
+    #about .image-column {
+        width: 100%;
+        opacity: 0;
+        transform: scale(0.9) rotateY(-15deg);
+        will-change: transform, opacity;
+        position: relative;
+        perspective: 1200px;
+    }
+    
+    #about .about-image-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+        margin: auto;
+        border-radius: 14px;
+        overflow: visible;
+    }
+    
+    @media (min-width: 768px) {
+        #about .about-image-wrapper {
+            max-width: 500px;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        #about .about-image-wrapper {
+            max-width: 550px;
+        }
+    }
+    
+    #about .about-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 14px;
+        box-shadow: 
+            0 0 60px rgba(0, 242, 162, 0.4),
+            0 20px 80px rgba(0, 0, 0, 0.6);
+        position: relative;
+        z-index: 1;
+        filter: brightness(1.05) contrast(1.1);
+    }
+
+    /* --- Animated SVG Border with DrawSVG --- */
+    #drawing-svg {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: calc(100% + 20px);
+        height: calc(100% + 20px);
+        pointer-events: none;
+        z-index: 10;
+        overflow: visible;
+    }
+    
+    #draw-path {
+        stroke: var(--accent-color, #00F2A2);
+        stroke-width: 4px;
+        fill: none;
+        rx: 14;
+        ry: 14;
+        filter: drop-shadow(0 0 15px var(--accent-color, #00F2A2));
+    }
+
+    /* --- Floating Particles --- */
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--accent-color, #00F2A2);
+        opacity: 0;
+        z-index: 0;
+        filter: blur(50px);
+    }
+    
+    .shape-1 {
+        width: 250px;
+        height: 250px;
+        top: -80px;
+        right: -80px;
+    }
+    
+    .shape-2 {
+        width: 180px;
+        height: 180px;
+        bottom: -60px;
+        left: -60px;
+    }
+
+    /* --- Text Column --- */
+    #about .text-column {
+        width: 100%;
+        text-align: left;
+        padding: 2rem 0;
+    }
+    
+    @media (max-width: 991px) {
+        #about .text-column {
+            text-align: center;
+        }
+        #about-subtitle::before {
+            display: none;
+        }
+    }
+
+    /* --- Subtitle --- */
+    #about-subtitle {
+        color: var(--accent-color, #00F2A2);
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        will-change: transform, opacity;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        position: relative;
+        padding-left: 3rem;
+    }
+    
+    #about-subtitle::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2.5rem;
+        height: 2px;
+        background: var(--accent-color, #00F2A2);
+        box-shadow: 0 0 10px var(--accent-color, #00F2A2);
+    }
+
+    /* --- Title --- */
+    #about-title {
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.15;
+        font-weight: 800;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        perspective: 800px;
+        color: var(--text-color, #FFFFFF);
+    }
+    
+    #about-title .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100px) rotateX(-90deg);
+        transform-origin: 50% 100%;
+        will-change: transform, opacity;
+    }
+    
+    #about-title .char.special-o-border {
+        color: transparent !important;
+        -webkit-text-stroke: 2.5px var(--accent-color, #00F2A2);
+        text-stroke: 2.5px var(--accent-color, #00F2A2);
+        filter: drop-shadow(0 0 8px var(--accent-color, #00F2A2));
+    }
+
+    /* --- Description --- */
+    #about-description {
+        color: var(--text-muted-color, #A1A1A1);
+        margin-bottom: 0;
+        line-height: 1.8;
+        font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+        opacity: 1;
+    }
+    
+    #about-description .line {
+        overflow: hidden;
+        display: block;
+    }
+    
+    #about-description .line > div {
+        opacity: 0;
+        transform: translateY(120%);
+        will-change: transform, opacity;
+    }
+
+    /* --- Flash Effect for Random Words --- */
+    .word-flash {
+        display: inline-block;
+        color: var(--accent-color, #00F2A2);
+        text-shadow: 0 0 15px var(--accent-color, #00F2A2);
+        animation: flash-pulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes flash-pulse {
+        0%, 100% { 
+            color: inherit;
+            text-shadow: none;
+            transform: scale(1);
+        }
+        50% { 
+            color: var(--accent-color, #00F2A2);
+            text-shadow: 0 0 20px var(--accent-color, #00F2A2);
+            transform: scale(1.08);
+        }
+    }
+
+    /* --- Stats Section --- */
+    #about .stats-wrapper {
+        width: 100%;
+        margin-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    
+    @media (min-width: 768px) {
+        #about .stats-wrapper {
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        #about .stats-wrapper {
+            margin-top: 3rem;
+            padding-bottom: 3rem;
+        }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        opacity: 0;
+    }
+    
+    @media (min-width: 768px) {
+        .stats-grid {
+            gap: 1.5rem;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .stats-grid {
+            gap: 2rem;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+        }
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem 0.75rem;
+        background: rgba(0, 242, 162, 0.05);
+        border-radius: 0.75rem;
+        border: 2px solid rgba(0, 242, 162, 0.25);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    @media (min-width: 768px) {
+        .stat-item {
+            padding: 2rem 1rem;
+            border-radius: 1rem;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .stat-item {
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    /* Shine effect */
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 30%,
+            rgba(0, 242, 162, 0.1) 50%,
+            transparent 70%
+        );
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        transition: transform 0.6s ease;
+    }
+    
+    .stat-item:hover {
+        background: rgba(0, 242, 162, 0.08);
+        border-color: var(--accent-color, #00F2A2);
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 
+            0 20px 40px rgba(0, 242, 162, 0.2),
+            0 0 30px rgba(0, 242, 162, 0.1);
+    }
+
+    .stat-item:hover::before {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+    
+    .stat-number {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        font-weight: 900;
+        color: var(--accent-color, #00F2A2);
+        display: block;
+        margin-bottom: 0.25rem;
+        text-shadow: 0 0 30px rgba(0, 242, 162, 0.5);
+        line-height: 1;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    @media (min-width: 768px) {
+        .stat-number {
+            margin-bottom: 0.5rem;
+        }
+    }
+    
+    .stat-label {
+        font-size: clamp(0.65rem, 2vw, 0.875rem);
+        color: var(--text-muted-color, #A1A1A1);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Glitch effect for stats on hover */
+    .stat-item:hover .stat-number {
+        animation: glitch 0.3s ease;
+    }
+
+    @keyframes glitch {
+        0%, 100% { transform: translate(0); }
+        25% { transform: translate(-2px, 2px); }
+        50% { transform: translate(2px, -2px); }
+        75% { transform: translate(-2px, -2px); }
+    }
+</style>
+
+<section id="about">
+    <div class="container">
+        <div class="content-wrapper">
+
+            <!-- Left Column: Image -->
+            <div class="image-column">
+                <div class="about-image-wrapper">
+                    <!-- Floating particles -->
+                    <div class="floating-shape shape-1"></div>
+                    <div class="floating-shape shape-2"></div>
+                    
+                    <img style="border-radius: 40px;" src="/img/protfole-removebg-preview.png" alt="Rejaul Karim" class="about-image">
+                    
+                    <!-- SVG Border Animation -->
+                    <svg id="drawing-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <rect id="draw-path" x="1" y="1" width="98" height="98"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right Column: Text Content -->
+            <div class="text-column">
+                <span id="about-subtitle">About Me</span>
+
+                <h2 id="about-title">
+                    Know Rejaul, Design Innovator & PHP Expert
+                </h2>
+
+                <p id="about-description">
+                    With over 6 years of experience in website design and development, I have successfully worked with multiple international brands to revamp their websites. I am truly passionate about the art of creating stunning and highly functional websites that not only meet but exceed the expectations of my clients.
+                </p>
+            </div>
+
+        </div>
+
+                        <!-- Stats Section (Below Everything) -->
+        <div class="stats-wrapper">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="4">4+</span>
+                    <span class="stat-label">YEARS</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="100">100+</span>
+                    <span class="stat-label">PROJECTS</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="50">57+</span>
+                    <span class="stat-label">CLIENTS</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GSAP Libraries (Using CDN links you provided) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/DrawSVGPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomEase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrambleTextPlugin.min.js"></script>
+
+<script>
+(function() {
+    'use strict';
+    
+    function initAboutAnimation() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || typeof SplitText === 'undefined') {
+            console.error('GSAP libraries not loaded');
+            return;
+        }
+
+        gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, CustomEase, ScrambleTextPlugin);
+
+        // Custom eases for premium feel
+        CustomEase.create("smooth", "0.4, 0, 0.2, 1");
+        CustomEase.create("bounce", "0.68, -0.55, 0.265, 1.55");
+
+        const aboutSection = document.querySelector('#about');
+        if (!aboutSection) return;
+
+        const imageColumn = aboutSection.querySelector('.image-column');
+        const drawPath = aboutSection.querySelector('#draw-path');
+        const subtitle = aboutSection.querySelector('#about-subtitle');
+        const title = aboutSection.querySelector('#about-title');
+        const description = aboutSection.querySelector('#about-description');
+        const statsGrid = aboutSection.querySelector('.stats-grid');
+        const statItems = aboutSection.querySelectorAll('.stat-item');
+        const floatingShapes = aboutSection.querySelectorAll('.floating-shape');
+
+        let titleSplit, descriptionSplit;
+        let animationStarted = false;
+        let flashInterval;
+
+        // Random Word Flash Effect - Ultra Fast & Working
+        function startRandomWordFlash() {
+            if (!description) return;
+            
+            const originalHTML = description.innerHTML;
+            
+            function getTextNodes(node) {
+                const textNodes = [];
+                const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+                let currentNode;
+                while (currentNode = walker.nextNode()) {
+                    if (currentNode.textContent.trim()) {
+                        textNodes.push(currentNode);
+                    }
+                }
+                return textNodes;
+            }
+            
+            function flashWord() {
+                // Get all text content
+                const textNodes = getTextNodes(description);
+                const allWords = [];
+                
+                textNodes.forEach(node => {
+                    const words = node.textContent.trim().split(/\s+/);
+                    words.forEach(word => {
+                        if (word.length > 5 && !['years', 'experience', 'website', 'websites', 'clients'].includes(word.toLowerCase())) {
+                            allWords.push(word);
+                        }
+                    });
+                });
+                
+                if (allWords.length === 0) return;
+                
+                const randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+                const currentHTML = description.innerHTML;
+                
+                // Create regex that matches the word
+                const regex = new RegExp(`\\b(${randomWord})\\b`, 'i');
+                const flashedHTML = currentHTML.replace(regex, '<span class="word-flash">$1</span>');
+                
+                description.innerHTML = flashedHTML;
+                
+                setTimeout(() => {
+                    description.innerHTML = originalHTML;
+                }, 350);
+            }
+            
+            // Initial rapid sequence
+            const timings = [200, 450, 750, 1100, 1500, 1950];
+            timings.forEach(time => {
+                setTimeout(flashWord, time);
+            });
+            
+            // Continue with regular intervals
+            setTimeout(() => {
+                flashInterval = setInterval(flashWord, Math.random() * 2000 + 1800);
+            }, 2500);
+        }
+
+        // Main Animation Timeline
+        const mainTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top 65%',
+                toggleActions: 'play none none none',
+                onEnter: function() {
+                    if (animationStarted) return;
+                    animationStarted = true;
+                    
+                    if (!titleSplit && title) {
+                        titleSplit = new SplitText(title, { type: "chars", charsClass: "char" });
+                        
+                        // Find and style ONLY the 'O' in "Rejaul"
+                        const titleText = title.textContent;
+                        const RejaulMatch = titleText.match(/Rejaul/i);
+                        
+                        if (RejaulMatch) {
+                            const RejaulStartIndex = RejaulMatch.index;
+                            const RejaulEndIndex = RejaulStartIndex + 6; // Length of "Rejaul"
+                            
+                            let charCount = 0;
+                            titleSplit.chars.forEach((char) => {
+                                const charText = char.textContent;
+                                // Skip whitespace in counting
+                                if (charText.trim() === '') return;
+                                
+                                // Check if this character is within Rejaul range and is 'O'
+                                if (charText.toUpperCase() === 'O' && 
+                                    charCount >= RejaulStartIndex && 
+                                    charCount < RejaulEndIndex) {
+                                    char.classList.add('special-o-border');
+                                }
+                                charCount++;
+                            });
+                        }
+                    }
+                    
+                    if (!descriptionSplit && description) {
+                        descriptionSplit = new SplitText(description, { type: "lines", linesClass: "line" });
+                    }
+                    
+                    startAnimations();
+                    
+                    // Start flash effect immediately after description reveals
+                    setTimeout(startRandomWordFlash, 2500);
+                }
+            }
+        });
+
+        function startAnimations() {
+            const tl = gsap.timeline();
+
+            // 1. Floating shapes intro
+            tl.to(floatingShapes, {
+                duration: 2,
+                opacity: 0.12,
+                scale: 1,
+                ease: 'power2.out',
+                stagger: 0.3
+            }, 0);
+
+            // Continuous floating
+            floatingShapes.forEach((shape, i) => {
+                gsap.to(shape, {
+                    y: i % 2 === 0 ? 40 : -40,
+                    x: i % 2 === 0 ? -20 : 20,
+                    duration: 5 + i,
+                    ease: 'sine.inOut',
+                    repeat: -1,
+                    yoyo: true
+                });
+            });
+
+            // 2. Image reveal with 3D rotation
+            tl.to(imageColumn, {
+                duration: 1.8,
+                opacity: 1,
+                scale: 1,
+                rotateY: 0,
+                ease: 'smooth'
+            }, 0.2);
+
+            // 3. SVG border draw (using DrawSVGPlugin)
+            tl.fromTo(drawPath, 
+                { drawSVG: "0%" },
+                { 
+                    drawSVG: "100%",
+                    duration: 3,
+                    ease: 'power1.inOut'
+                }, 0.5);
+
+            // 4. Subtitle with scramble effect
+            tl.to(subtitle, {
+                duration: 1,
+                opacity: 1,
+                x: 0,
+                ease: 'bounce'
+            }, 1);
+
+            // Optional: Scramble subtitle text
+            if (ScrambleTextPlugin) {
+                tl.to(subtitle, {
+                    duration: 0.8,
+                    scrambleText: {
+                        text: subtitle.textContent,
+                        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                        revealDelay: 0.3
+                    }
+                }, 1.2);
+            }
+
+            // 5. Title characters cascade
+            if (titleSplit && titleSplit.chars) {
+                tl.to(titleSplit.chars, {
+                    duration: 1.4,
+                    opacity: 1,
+                    y: 0,
+                    rotationX: 0,
+                    ease: 'expo.out',
+                    stagger: {
+                        each: 0.025,
+                        from: "start"
+                    }
+                }, 1.5);
+            }
+
+            // 6. Description lines reveal
+            if (descriptionSplit && descriptionSplit.lines) {
+                descriptionSplit.lines.forEach((line, i) => {
+                    const inner = line.children[0];
+                    if (inner) {
+                        tl.to(inner, {
+                            duration: 1.2,
+                            opacity: 1,
+                            y: '0%',
+                            ease: 'smooth'
+                        }, 2 + (i * 0.12));
+                    }
+                });
+            }
+
+            // 7. Stats grid entrance with enhanced visibility
+            tl.to(statsGrid, {
+                duration: 1.2,
+                opacity: 1,
+                y: 0,
+                ease: 'power2.out'
+            }, 2.5);
+
+            // 8. Individual stat items with 3D flip effect
+            tl.from(statItems, {
+                duration: 1.2,
+                y: 80,
+                opacity: 0,
+                scale: 0.7,
+                rotationX: -60,
+                transformOrigin: "center bottom",
+                stagger: {
+                    each: 0.2,
+                    ease: "back.out(1.7)"
+                },
+                ease: 'expo.out',
+                clearProps: "all" // Clear transforms after animation
+            }, 2.8);
+
+            // 9. Animated counters with enhanced effects
+            statItems.forEach((item, i) => {
+                const numberEl = item.querySelector('.stat-number');
+                const labelEl = item.querySelector('.stat-label');
+                const target = parseInt(numberEl.getAttribute('data-target'));
+                const hasSuffix = numberEl.textContent.includes('+');
+                
+                // Ensure visibility
+                gsap.set([numberEl, labelEl], { opacity: 1, visibility: 'visible' });
+                
+                // Counter animation with random variation
+                tl.to({value: 0}, {
+                    duration: 2.8,
+                    value: target,
+                    ease: 'expo.out',
+                    onUpdate: function() {
+                        const val = Math.floor(this.targets()[0].value);
+                        numberEl.textContent = hasSuffix ? val + '+' : val;
+                    },
+                    onComplete: function() {
+                        // Final pulse effect
+                        gsap.to(numberEl, {
+                            scale: 1.1,
+                            duration: 0.3,
+                            yoyo: true,
+                            repeat: 1,
+                            ease: 'power2.inOut'
+                        });
+                    }
+                }, 3.3 + (i * 0.2));
+                
+                // Label fade in
+                tl.from(labelEl, {
+                    duration: 0.8,
+                    opacity: 0,
+                    y: 10,
+                    ease: 'power2.out'
+                }, 3.5 + (i * 0.2));
+            });
+        }
+
+        // Parallax on scroll
+        gsap.to(imageColumn, {
+            scrollTrigger: {
+                trigger: aboutSection,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.5
+            },
+            y: -60,
+            ease: 'none'
+        });
+
+        // Magnetic hover on image (desktop)
+        if (window.innerWidth > 992) {
+            const wrapper = imageColumn.querySelector('.about-image-wrapper');
+            const img = wrapper.querySelector('.about-image');
+            
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+                const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+                
+                gsap.to(img, {
+                    duration: 0.5,
+                    x: x * 15,
+                    y: y * 15,
+                    rotationY: x * 5,
+                    rotationX: -y * 5,
+                    ease: 'power2.out',
+                    transformPerspective: 1000
+                });
+            });
+            
+            wrapper.addEventListener('mouseleave', () => {
+                gsap.to(img, {
+                    duration: 1,
+                    x: 0,
+                    y: 0,
+                    rotationY: 0,
+                    rotationX: 0,
+                    ease: 'elastic.out(1, 0.4)'
+                });
+            });
+        }
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            if (flashInterval) clearInterval(flashInterval);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAboutAnimation);
+    } else {
+        initAboutAnimation();
+    }
+})();
+
+</script>
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="py-20">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-4xl font-bold">My Recent Work</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-card rounded-lg overflow-hidden project-card animate-on-scroll" style="transition-delay: 0ms;">
+                        <img src="./img/1nd-project.png" alt="Project Title One" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Project Title One</h3>
+                            <p class="text-slate-400 mb-4 text-sm">A brief description of the project, the technologies used, and the problem it solved.</p>
+                            <a href="#" class="font-semibold text-accent hover:underline" target="_blank" rel="noopener noreferrer">View Details →</a>
+                        </div>
+                    </div>
+                    <div class="bg-card rounded-lg overflow-hidden project-card animate-on-scroll" style="transition-delay: 150ms;">
+                        <img src="/img/2nd-project.png" alt="Project Title Two" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Project Title Two</h3>
+                            <p class="text-slate-400 mb-4 text-sm">A brief description of the project, the technologies used, and the problem it solved.</p>
+                            <a href="#" class="font-semibold text-accent hover:underline" target="_blank" rel="noopener noreferrer">View Details →</a>
+                        </div>
+                    </div>
+                    <div class="bg-card rounded-lg overflow-hidden project-card animate-on-scroll" style="transition-delay: 300ms;">
+                        <img src="img/3nd-project.png" alt="Project Title Three" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Project Title Three</h3>
+                            <p class="text-slate-400 mb-4 text-sm">A brief description of the project, the technologies used, and the problem it solved.</p>
+                            <a href="#" class="font-semibold text-accent hover:underline" target="_blank" rel="noopener noreferrer">View Details →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section id="testimonials" class="py-20">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-4xl font-bold">Customer Testimonials</h2>
+                    <p class="max-w-xl mx-auto text-slate-400 mt-4">Discover what our delighted clients are saying.</p>
+                </div>
+                <div class="marquee animate-on-scroll">
+                    <div class="marquee-content">
+                                                 <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Rejaul is a true professional. His raw PHP skills are exceptional, and he delivered a product that exceeded our expectations on every level. Highly recommend!"</p>
+                            <div>
+                                <p class="font-bold">John Doe</p>
+                                <p class="text-sm text-slate-500">Tech Solutions Inc.</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Working with Rejaul was a breeze. He transformed our vision into a high-performing e-commerce platform. His attention to detail is second to none."</p>
+                            <div>
+                                <p class="font-bold">Jane Smith</p>
+                                <p class="text-sm text-slate-500">E-Commerce Innovators</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"From server administration to SEO, Rejaul&#039;s expertise is vast. He&#039;s our go-to developer for all complex web projects. A reliable and talented partner."</p>
+                            <div>
+                                <p class="font-bold">Sam Wilson</p>
+                                <p class="text-sm text-slate-500">Creative Agency</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"The WordPress site Rejaul built for us is fantastic. It&#039;s fast, secure, and easy to manage. His depth of knowledge is truly impressive."</p>
+                            <div>
+                                <p class="font-bold">Emily White</p>
+                                <p class="text-sm text-slate-500">Startup Hub</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Rejaul is a true professional. His raw PHP skills are exceptional, and he delivered a product that exceeded our expectations on every level. Highly recommend!"</p>
+                            <div>
+                                <p class="font-bold">John Doe</p>
+                                <p class="text-sm text-slate-500">Tech Solutions Inc.</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Working with Rejaul was a breeze. He transformed our vision into a high-performing e-commerce platform. His attention to detail is second to none."</p>
+                            <div>
+                                <p class="font-bold">Jane Smith</p>
+                                <p class="text-sm text-slate-500">E-Commerce Innovators</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"From server administration to SEO, Rejaul&#039;s expertise is vast. He&#039;s our go-to developer for all complex web projects. A reliable and talented partner."</p>
+                            <div>
+                                <p class="font-bold">Sam Wilson</p>
+                                <p class="text-sm text-slate-500">Creative Agency</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"The WordPress site Rejaul built for us is fantastic. It&#039;s fast, secure, and easy to manage. His depth of knowledge is truly impressive."</p>
+                            <div>
+                                <p class="font-bold">Emily White</p>
+                                <p class="text-sm text-slate-500">Startup Hub</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Rejaul is a true professional. His raw PHP skills are exceptional, and he delivered a product that exceeded our expectations on every level. Highly recommend!"</p>
+                            <div>
+                                <p class="font-bold">John Doe</p>
+                                <p class="text-sm text-slate-500">Tech Solutions Inc.</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Working with Rejaul was a breeze. He transformed our vision into a high-performing e-commerce platform. His attention to detail is second to none."</p>
+                            <div>
+                                <p class="font-bold">Jane Smith</p>
+                                <p class="text-sm text-slate-500">E-Commerce Innovators</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"From server administration to SEO, Rejaul&#039;s expertise is vast. He&#039;s our go-to developer for all complex web projects. A reliable and talented partner."</p>
+                            <div>
+                                <p class="font-bold">Sam Wilson</p>
+                                <p class="text-sm text-slate-500">Creative Agency</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"The WordPress site Rejaul built for us is fantastic. It&#039;s fast, secure, and easy to manage. His depth of knowledge is truly impressive."</p>
+                            <div>
+                                <p class="font-bold">Emily White</p>
+                                <p class="text-sm text-slate-500">Startup Hub</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Rejaul is a true professional. His raw PHP skills are exceptional, and he delivered a product that exceeded our expectations on every level. Highly recommend!"</p>
+                            <div>
+                                <p class="font-bold">John Doe</p>
+                                <p class="text-sm text-slate-500">Tech Solutions Inc.</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"Working with Rejaul was a breeze. He transformed our vision into a high-performing e-commerce platform. His attention to detail is second to none."</p>
+                            <div>
+                                <p class="font-bold">Jane Smith</p>
+                                <p class="text-sm text-slate-500">E-Commerce Innovators</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"From server administration to SEO, Rejaul&#039;s expertise is vast. He&#039;s our go-to developer for all complex web projects. A reliable and talented partner."</p>
+                            <div>
+                                <p class="font-bold">Sam Wilson</p>
+                                <p class="text-sm text-slate-500">Creative Agency</p>
+                            </div>
+                        </div>
+                                                <div class="testimonial-card bg-card p-6 rounded-lg border border-border-color">
+                            <div class="flex items-center mb-2">
+                                <span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span><span class="star-gold">★</span>                            </div>
+                            <p class="text-slate-400 mb-4 text-sm">"The WordPress site Rejaul built for us is fantastic. It&#039;s fast, secure, and easy to manage. His depth of knowledge is truly impressive."</p>
+                            <div>
+                                <p class="font-bold">Emily White</p>
+                                <p class="text-sm text-slate-500">Startup Hub</p>
+                            </div>
+                        </div>
+                                            </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-20">
+                <div class="text-center mb-12 animate-on-scroll">
+                    <h2 class="text-4xl font-bold">Get In Touch</h2>
+                    <p class="max-w-xl mx-auto text-slate-400 mt-4">
+                        Have a project in mind or just want to say hello? My inbox is always open.
+                    </p>
+                </div>
+                <div class="max-w-2xl mx-auto bg-card p-8 rounded-lg border border-border-color animate-on-scroll">
+                   <form action="https://formspree.io/f/xovpondz" method="POST">
+                        <div class="mb-4"><label for="name" class="block mb-2 text-sm">Your Name</label><input type="text" id="name" name="name" required class="w-full p-3 bg-gray-900 border border-border-color rounded-md focus:outline-none focus:ring-2 focus:ring-accent"></div>
+                        <div class="mb-4"><label for="email" class="block mb-2 text-sm">Your Email</label><input type="email" id="email" name="email" required class="w-full p-3 bg-gray-900 border border-border-color rounded-md focus:outline-none focus:ring-2 focus:ring-accent"></div>
+                        <div class="mb-6"><label for="message" class="block mb-2 text-sm">Message</label><textarea id="message" name="message" rows="5" required class="w-full p-3 bg-gray-900 border border-border-color rounded-md focus:outline-none focus:ring-2 focus:ring-accent"></textarea></div>
+                        <div class="text-center"><button type="submit" class="btn btn-primary w-full md:w-auto"><span>Send Message</span></button></div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+const form = document.getElementById('contact-form');
+const statusEl = document.getElementById('form-status');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusEl.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      form.reset();
+      statusEl.textContent = 'Thanks! Your message has been sent.';
+      statusEl.style.color = '#10b981';
+    } else {
+      const data = await res.json().catch(()=> ({}));
+      statusEl.textContent = data.errors
+        ? data.errors.map(e=>e.message).join(', ')
+        : 'Oops! Something went wrong.';
+      statusEl.style.color = '#ef4444';
+    }
+  } catch (_) {
+    statusEl.textContent = 'Network error. Please try again.';
+    statusEl.style.color = '#ef4444';
+  }
+});
+</script>
+
+
+
+
+
+    <!-- Final CTA Section -->
+    <section class="py-20 final-cta">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold leading-tight">Offering Expertise <br> for Your Project</h2>
+            <div class="mt-8 flex justify-center gap-4">
+                <a
+                    class="btn btn-primary"
+                    href="mailto:rejaulwebdev85@gmail.com?subject=Project%20Inquiry&body=Hi%20Rejaul,%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AThanks!"
+                    >
+                    <span>Email Me</span>
+                </a>
+
+                <a href="#contact" class="btn btn-secondary"><span>Book a Meeting</span></a>
+            </div>
+        </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p style="text-align:center;">
-        📧 Email: <a href="mailto:your@email.com">your@email.com</a><br/>
-        💻 GitHub: <a href="https://github.com/devrejaul">github.com/devrejaul</a>
-      </p>
-    </section>
+    <!-- Footer -->
+    <footer class="bg-card border-t border-border-color">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p>&copy; 2025 Rejaul Karim❤️ All Rights Reserved.</p>
+            
+        </div>
+    </footer>
 
-    <footer>© <span id="year"></span> Rejaul Karim — version 2.0</footer>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const initMobileMenu = () => {
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const openIcon = document.getElementById('menu-open-icon');
+                const closeIcon = document.getElementById('menu-close-icon');
 
+<<<<<<< HEAD
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
@@ -136,3 +1797,69 @@
 </html>
 
 < updated manually Sat Oct 18 01:39:45 OST 2025 -->
+=======
+                if (!mobileMenuButton || !mobileMenu || !openIcon || !closeIcon) return;
+
+                const toggleMenu = () => {
+                    mobileMenu.classList.toggle('active');
+                    openIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                    document.body.classList.toggle('menu-open');
+                };
+
+                mobileMenuButton.addEventListener('click', toggleMenu);
+
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (mobileMenu.classList.contains('active')) { 
+                            toggleMenu(); 
+                        }
+                    });
+                });
+            };
+            
+            const initRandomAnimationDelays = () => {
+                const expertiseIcons = document.querySelectorAll('.expertise-icon');
+                expertiseIcons.forEach(icon => {
+                    const delay = Math.random() * 3; // Random delay between 0 and 3s
+                    const wipeElement = icon.querySelector('.icon-bg-wipe');
+                    const svgElement = icon.querySelector('svg');
+                    if (wipeElement) {
+                       wipeElement.style.animationDelay = `-${delay}s`;
+                    }
+                    if (svgElement) {
+                       svgElement.style.animationDelay = `-${delay}s`;
+                    }
+                });
+            };
+            
+            const initScrollAnimations = () => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.animate-on-scroll').forEach(target => { observer.observe(target); });
+            };
+            
+            const initHeaderScrollEffect = () => {
+                const header = document.getElementById('main-header');
+                window.addEventListener('scroll', () => {
+                    header.classList.toggle('scrolled', window.scrollY > 50);
+                });
+            };
+
+            // Initialize all functionalities
+            initScrollAnimations();
+            initHeaderScrollEffect();
+            initMobileMenu();
+            initRandomAnimationDelays();
+        });
+    </script>
+</body>
+</html>
+
+>>>>>>> d93b4f1 (Fix image paths & add img assets)
