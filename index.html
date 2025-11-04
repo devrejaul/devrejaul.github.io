@@ -1,16 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Rejaul</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rejaul | Portfolio</title>
+  <meta name="description" content="Portfolio of Rejaul Karim">
+  <style>
+    :root {
+      --bg:#0b1220;
+      --fg:#e5e7eb;
+      --muted:#9aa3b2;
+      --card:#111827;
+      --accent:#60a5fa;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+    }
+    .wrap{max-width:880px;margin:auto;padding:32px 16px}
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:28px
+    }
+    a{color:var(--accent);text-decoration:none}
+    .card{
+      background:var(--card);
+      border:1px solid #1f2937;
+      border-radius:14px;
+      padding:20px;
+      margin:12px 0
+    }
+    h1{margin:0 0 8px}
+    .muted{color:var(--muted)}
+    footer{margin-top:28px;font-size:14px;color:var(--muted);text-align:center}
+
+    /* New sections */
+    section{
+      margin-top:40px;
+      padding:30px;
+      border-radius:14px;
+      background:var(--card);
+    }
+    section h2{
+      color:var(--accent);
+      text-align:center;
+      margin-bottom:16px;
+    }
+    .project-list{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:20px;
+    }
+    .project-card{
+      width:260px;
+      background:#1e293b;
+      border-radius:12px;
+      padding:20px;
+      border:1px solid #334155;
+    }
+    .project-card h3{margin-top:0}
+    .project-card a{color:#3b82f6}
+  </style>
 </head>
 <body>
+<<<<<<< HEAD
  <h1>I am Rejaul Karim</h1>
  <h2>This page is under construction</h2>
  <p> I am Web Developer </p> 
  
 <h2>✅ Updated at Fri Oct 17 19:16:57 OST 2025</h2>
+=======
+  <div class="wrap">
+    <header>
+      <strong>Rejaul Karim</strong>
+      <nav>
+        <a href="#about">About</a> ·
+        <a href="#projects">Projects</a> ·
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <h1>Assalamu Alaikum 👋</h1>
+    <p class="muted">Welcome to my personal portfolio website — built with ❤️ and GitHub Pages!</p>
+
+    <!-- About Section -->
+    <section id="about">
+      <h2>About Me</h2>
+      <p style="max-width:650px;margin:auto;text-align:center;">
+        Hi! I'm <strong>Rejaul Karim</strong>, a passionate web developer who loves creating clean,
+        responsive, and user-friendly websites.  
+        I’m currently expanding my skills in JavaScript and modern frameworks.
+      </p>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <h2>My Projects</h2>
+      <div class="project-list">
+        <div class="project-card">
+          <h3>Portfolio Website</h3>
+          <p>A responsive personal portfolio built using HTML, CSS, and JS.</p>
+          <a href="#">View Demo →</a>
+        </div>
+        <div class="project-card">
+          <h3>GitHub Pages Site</h3>
+          <p>This site is hosted on GitHub Pages — free and fast static hosting.</p>
+          <a href="https://github.com/devrejaul/devrejaul.github.io">View Code →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p style="text-align:center;">
+        📧 Email: <a href="mailto:your@email.com">your@email.com</a><br/>
+        💻 GitHub: <a href="https://github.com/devrejaul">github.com/devrejaul</a>
+      </p>
+    </section>
+
+    <footer>© <span id="year"></span> Rejaul Karim — version 2.0</footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+>>>>>>> 4e0f49e13907402e5a91f0b14ee24858928c5858
 </body>
 </html>
 
