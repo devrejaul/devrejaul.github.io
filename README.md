@@ -55,7 +55,7 @@ A clean, responsive portfolio website to showcase my projects, skills, and conta
 
 ## 📸 Screenshots
 ### Hero section
-![Hero](./img/screenshot-hero.png)
+![Hero](./img/Screenshot 2025-11-10 030345.png)
 
 ### Recent Work
 | Project One | Project Two | Project Three |
