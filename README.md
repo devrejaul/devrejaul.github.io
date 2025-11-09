@@ -83,5 +83,5 @@ MIT © 2025 Rejaul Karim
 
 ## 📬 Contact
 - **Email:** <rejaulwebdev85@gmail.com>
-- **LinkedIn:** https://www.linkedin.com/in/<your-handle>/
+- **LinkedIn:** [https://www.linkedin.com/in/](https://www.linkedin.com/in/devrejaul/)<your-handle>/
 - **GitHub:** https://github.com/devrejaul
