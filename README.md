@@ -25,9 +25,7 @@ A clean, responsive portfolio website to showcase my projects, skills, and conta
 ├── script.js
 ├── img/
 │   ├── screenshot-hero.png
-│   ├── screenshot-work-1.png
-│   ├── screenshot-work-2.png
-│   └── screenshot-work-3.png
+│   └── screenshot-work-1.png
 └── css/ (optional, if you split styles)
 ```
 
@@ -54,15 +52,15 @@ A clean, responsive portfolio website to showcase my projects, skills, and conta
 > **Tip:** Use **relative paths** like `./img/...`, `./script.js`, and `./style.css` so assets load correctly on Pages.
 
 ## 📸 Screenshots
+
 ### Hero section
-![Hero](./img/Screenshot 2025-11-10 030345.png)
+![Hero](./img/screenshot-hero.png)
 
 ### Recent Work
-| Project One | Project Two | Project Three |
-|-------------|-------------|---------------|
-| ![Work 1](./img/screenshot-work-1.png) | ![Work 2](./img/screenshot-work-2.png) | ![Work 3](./img/screenshot-work-3.png) |
+![Recent Work Grid](./img/screenshot-work-1.png)
 
-> Save your actual screenshots using the above file names in the `img/` folder.
+> Want more screenshots? Save them inside `img/` and add like:
+> `![Work 2](./img/screenshot-work-2.png)`
 
 ## 🔧 SEO Notes (optional)
 Add these tags in `index.html` for better previews and search results:
@@ -84,6 +82,6 @@ Add these tags in `index.html` for better previews and search results:
 MIT © 2025 Rejaul Karim
 
 ## 📬 Contact
-- **Email:** <your-email@example.com>
+- **Email:** <rejaulwebdev85@gmail.com>
 - **LinkedIn:** https://www.linkedin.com/in/<your-handle>/
 - **GitHub:** https://github.com/devrejaul
